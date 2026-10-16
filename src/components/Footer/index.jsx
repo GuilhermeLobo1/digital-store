@@ -1,5 +1,8 @@
 import React from 'react';
 import Logo from '../Logo';
+import facebookIcon from '../../assets/facebook.svg';
+import instagramIcon from '../../assets/instagram.svg';
+import twitterIcon from '../../assets/twitter.svg';
 
 function FooterInformations({ title, informations }) {
     return (
@@ -44,10 +47,16 @@ export default function Footer() {
                     <p style={{ fontSize: '14px', lineHeight: '24px', color: 'var(--light-gray-2)' }}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                     </p>
-                    <div style={{ display: 'flex', gap: '16px', fontSize: '20px' }}>
-                        <span>🌐</span>
-                        <span>📸</span>
-                        <span>🐦</span>
+                    <div style={{ display: 'flex', gap: '32px', alignItems: 'center', marginTop: '8px' }}>
+                        <a href="https://facebook.com" target="_blank" rel="noreferrer">
+                            <img src={facebookIcon} alt="Facebook" style={{ width: '20px', height: '20px' }} />
+                        </a>
+                        <a href="https://instagram.com" target="_blank" rel="noreferrer">
+                            <img src={instagramIcon} alt="Instagram" style={{ width: '20px', height: '20px' }} />
+                        </a>
+                        <a href="https://twitter.com" target="_blank" rel="noreferrer">
+                            <img src={twitterIcon} alt="Twitter" style={{ width: '20px', height: '20px' }} />
+                        </a>
                     </div>
                 </div>
 
@@ -70,7 +79,7 @@ export default function Footer() {
             <hr style={{ borderColor: 'var(--dark-gray-3)', margin: '40px auto 20px', maxWidth: '1200px' }} />
 
             <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--light-gray)' }}>
-                © 2024 Digital Store
+                © 2026 Digital Store
             </p>
         </footer>
     );
