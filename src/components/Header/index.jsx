@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import Logo from '../Logo';
-
+import miniCart from '../../assets/mini-cart.svg';
 export default function Header() {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
@@ -97,8 +97,8 @@ export default function Header() {
                     </Link>
 
                     {/* Carrinho */}
-                    <div style={{ cursor: 'pointer', fontSize: '22px' }} title="Carrinho">
-                        🛒
+                    <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }} title="Carrinho">
+                        <img src={miniCart} alt="Carrinho" style={{ width: '24px', height: '24px' }} />
                     </div>
                 </div>
             </div>

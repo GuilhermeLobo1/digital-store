@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ProductCard({ image, name, price, priceDiscount }) {
+export default function ProductCard({ image, name, price, priceDiscount, discountTag = '30% OFF' }) {
     return (
         <div
             style={{
@@ -8,31 +8,52 @@ export default function ProductCard({ image, name, price, priceDiscount }) {
                 flexDirection: 'column',
                 width: '292px',
                 cursor: 'pointer',
-                transition: 'transform 0.2s ease',
                 backgroundColor: 'var(--white)',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.04)'
+                position: 'relative',
+                transition: 'transform 0.2s ease'
             }}
         >
+            {/* Tag de Desconto (quando houver priceDiscount) */}
+            {priceDiscount && (
+                <span
+                    style={{
+                        position: 'absolute',
+                        top: '16px',
+                        left: '16px',
+                        backgroundColor: '#E7FF86',
+                        color: 'var(--dark-gray-2)',
+                        fontSize: '12px',
+                        fontWeight: '700',
+                        padding: '4px 10px',
+                        borderRadius: '20px',
+                        zIndex: 2
+                    }}
+                >
+                    {discountTag}
+                </span>
+            )}
+
             {/* Imagem do Produto */}
             <div
                 style={{
                     width: '292px',
                     height: '321px',
-                    backgroundColor: '#E2E3FF',
+                    backgroundColor: '#FFFFFF',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
                 }}
             >
                 <img
                     src={image}
                     alt={name}
                     style={{
-                        maxWidth: '100%',
-                        maxHeight: '100%',
+                        maxWidth: '85%',
+                        maxHeight: '85%',
                         objectFit: 'contain'
                     }}
                     onError={(e) => {
@@ -42,16 +63,16 @@ export default function ProductCard({ image, name, price, priceDiscount }) {
             </div>
 
             {/* Informações */}
-            <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ padding: '16px 8px 12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <span style={{ fontSize: '12px', color: 'var(--light-gray)', fontWeight: 'bold' }}>
                     Tênis
                 </span>
                 <h4
                     style={{
-                        fontSize: '16px',
+                        fontSize: '18px',
                         color: 'var(--dark-gray-2)',
-                        fontWeight: '500',
-                        lineHeight: '22px',
+                        fontWeight: '400',
+                        lineHeight: '24px',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis'
@@ -61,12 +82,12 @@ export default function ProductCard({ image, name, price, priceDiscount }) {
                 </h4>
 
                 {/* Preços */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
                     {priceDiscount ? (
                         <>
                             <span
                                 style={{
-                                    fontSize: '16px',
+                                    fontSize: '18px',
                                     color: 'var(--light-gray)',
                                     textDecoration: 'line-through'
                                 }}
@@ -75,7 +96,7 @@ export default function ProductCard({ image, name, price, priceDiscount }) {
                             </span>
                             <span
                                 style={{
-                                    fontSize: '24px',
+                                    fontSize: '22px',
                                     color: 'var(--dark-gray)',
                                     fontWeight: '700'
                                 }}
@@ -86,7 +107,7 @@ export default function ProductCard({ image, name, price, priceDiscount }) {
                     ) : (
                         <span
                             style={{
-                                fontSize: '24px',
+                                fontSize: '22px',
                                 color: 'var(--dark-gray)',
                                 fontWeight: '700'
                             }}
