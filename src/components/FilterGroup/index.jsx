@@ -1,6 +1,18 @@
 import React from 'react';
 
-export default function FilterGroup({ title, inputType = 'checkbox', options = [] }) {
+export default function FilterGroup({
+    title,
+    inputType = 'checkbox',
+    options = [],
+    selectedValues = [],
+    onChange
+}) {
+    const handleChange = (val) => {
+        if (onChange) {
+            onChange(val);
+        }
+    };
+
     return (
         <div style={{ marginBottom: '20px' }}>
             <h4
@@ -16,7 +28,12 @@ export default function FilterGroup({ title, inputType = 'checkbox', options = [
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {options.map((opt, index) => {
-                    const inputId = `${title}-${index}-${opt.value || opt.text}`;
+                    const value = opt.value || opt.text;
+                    const inputId = `${title}-${index}-${value}`;
+                    const isChecked = Array.isArray(selectedValues)
+                        ? selectedValues.includes(value)
+                        : selectedValues === value;
+
                     return (
                         <label
                             key={index}
@@ -34,7 +51,9 @@ export default function FilterGroup({ title, inputType = 'checkbox', options = [
                                 id={inputId}
                                 type={inputType}
                                 name={inputType === 'radio' ? title : undefined}
-                                value={opt.value || opt.text}
+                                value={value}
+                                checked={isChecked}
+                                onChange={() => handleChange(value)}
                                 style={{
                                     width: '22px',
                                     height: '22px',

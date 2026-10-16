@@ -43,3 +43,22 @@ button {
   border: none;
   outline: none;
 }
+
+/* Controlo de visibilidade entre Mobile e Desktop */
+.mobile-only {
+  display: none !important;
+}
+
+.desktop-only {
+  display: flex !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+}
