@@ -1,88 +1,88 @@
 import React, { useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Layout from '../Layout';
+import Section from '../../components/Section';
 import ProductListing from '../../components/ProductListing';
 import FilterGroup from '../../components/FilterGroup';
 
 export default function ProductListingPage() {
-    const [sortOrder, setSortOrder] = useState('mais-relevantes');
-    const [filtrosAbertos, setFiltrosAbertos] = useState(false);
+    const [searchParams] = useSearchParams();
+    const termoFiltroUrl = searchParams.get('filter') || '';
+
+    const [sortOrder, setSortOrder] = useState('menor-preco');
     const [marcasSelecionadas, setMarcasSelecionadas] = useState([]);
     const [estadoSelecionado, setEstadoSelecionado] = useState('');
+    const [filtroMobileAberto, setFiltroMobileAberto] = useState(false);
 
     const baseProdutos = [
-        { id: 1, name: 'K-Swiss V8 - Masculino', brand: 'k-swiss', image: '/product-thumb-1.jpeg', price: 200, priceDiscount: 100, isNew: true },
-        { id: 2, name: 'Adidas Grand Court - Feminino', brand: 'adiddas', image: '/product-thumb-2.jpeg', price: 220, priceDiscount: 150, isNew: true },
-        { id: 3, name: 'Nike Revolution Casual', brand: 'nike', image: '/product-thumb-3.jpeg', price: 280, priceDiscount: 200, isNew: false },
-        { id: 4, name: 'Puma Runner Pro', brand: 'puma', image: '/product-thumb-4.jpeg', price: 190, priceDiscount: 130, isNew: true },
-        { id: 5, name: 'Calenciaga Track Style', brand: 'calenciaga', image: '/product-thumb-5.jpeg', price: 600, priceDiscount: 450, isNew: false },
-        { id: 6, name: 'K-Swiss V8 Preto', brand: 'k-swiss', image: '/product-thumb-1.jpeg', price: 210, priceDiscount: 160, isNew: true },
-        { id: 7, name: 'Adidas Classic Edition', brand: 'adiddas', image: '/product-thumb-2.jpeg', price: 250, priceDiscount: 180, isNew: false },
-        { id: 8, name: 'Nike Air Urban 90s', brand: 'nike', image: '/product-thumb-3.jpeg', price: 340, priceDiscount: 290, isNew: true }
+        { id: 1, name: 'K-Swiss V8 - Masculino', brand: 'k-swiss', isNew: true, image: '/product-thumb-1.jpeg', price: 200, priceDiscount: 100 },
+        { id: 2, name: 'Nike Air Max - Feminino', brand: 'nike', isNew: true, image: '/product-thumb-2.jpeg', price: 250, priceDiscount: 180 },
+        { id: 3, name: 'Adidas Classic', brand: 'adidas', isNew: false, image: '/product-thumb-3.jpeg', price: 150, priceDiscount: null },
+        { id: 4, name: 'Puma Running Pro', brand: 'puma', isNew: true, image: '/product-thumb-4.jpeg', price: 320, priceDiscount: 249.9 },
+        { id: 5, name: 'Nike Revolution 6', brand: 'nike', isNew: true, image: '/product-thumb-5.jpeg', price: 299.9, priceDiscount: 219.9 },
+        { id: 6, name: 'Adidas Street Wear', brand: 'adidas', isNew: false, image: '/product-thumb-1.jpeg', price: 220, priceDiscount: null },
+        { id: 7, name: 'K-Swiss Sport Edition', brand: 'k-swiss', isNew: true, image: '/product-thumb-2.jpeg', price: 199, priceDiscount: 159.9 },
+        { id: 8, name: 'Puma Urban 90s', brand: 'puma', isNew: false, image: '/product-thumb-3.jpeg', price: 280, priceDiscount: 219.9 }
     ];
 
-    const opcoesMarcas = [
-        { text: 'Adiddas', value: 'adiddas' },
-        { text: 'Calenciaga', value: 'calenciaga' },
-        { text: 'K-Swiss', value: 'k-swiss' },
-        { text: 'Nike', value: 'nike' },
-        { text: 'Puma', value: 'puma' }
-    ];
-
-    const opcoesEstado = [
-        { text: 'Novo', value: 'novo' },
-        { text: 'Usado', value: 'usado' }
-    ];
-
-    const alternarMarca = (marca) => {
-        setMarcasSelecionadas((anteriores) =>
-            anteriores.includes(marca)
-                ? anteriores.filter((m) => m !== marca)
-                : [...anteriores, marca]
+    const handleBrandChange = (val) => {
+        setMarcasSelecionadas((prev) =>
+            prev.includes(val) ? prev.filter((item) => item !== val) : [...prev, val]
         );
     };
 
-    // Filtragem e ordenação dinâmica dos produtos
     const produtosExibidos = useMemo(() => {
-        let lista = baseProdutos.filter((item) => {
+        const filtrados = baseProdutos.filter((item) => {
             const passaMarca = marcasSelecionadas.length === 0 || marcasSelecionadas.includes(item.brand);
             const passaEstado =
                 !estadoSelecionado ||
                 (estadoSelecionado === 'novo' && item.isNew) ||
                 (estadoSelecionado === 'usado' && !item.isNew);
+            const passaBusca =
+                !termoFiltroUrl ||
+                item.name.toLowerCase().includes(termoFiltroUrl.toLowerCase()) ||
+                item.brand.toLowerCase().includes(termoFiltroUrl.toLowerCase());
 
-            return passaMarca && passaEstado;
+            return passaMarca && passaEstado && passaBusca;
         });
 
-        if (sortOrder === 'menor-preco') {
-            lista.sort((a, b) => (a.priceDiscount || a.price) - (b.priceDiscount || b.price));
-        } else if (sortOrder === 'maior-preco') {
-            lista.sort((a, b) => (b.priceDiscount || b.price) - (a.priceDiscount || a.price));
-        }
+        return [...filtrados].sort((a, b) => {
+            const precoA = a.priceDiscount ?? a.price;
+            const precoB = b.priceDiscount ?? b.price;
+            return sortOrder === 'menor-preco' ? precoA - precoB : precoB - precoA;
+        });
+    }, [marcasSelecionadas, estadoSelecionado, sortOrder, termoFiltroUrl]);
 
-        return lista;
-    }, [marcasSelecionadas, estadoSelecionado, sortOrder]);
-
-    const BlocoFiltros = () => (
+    const conteudoFiltros = (
         <>
             <FilterGroup
-                title="Marka"
+                title="Marca"
                 inputType="checkbox"
-                options={opcoesMarcas}
                 selectedValues={marcasSelecionadas}
-                onChange={alternarMarca}
+                onChange={handleBrandChange}
+                options={[
+                    { text: 'Adidas', value: 'adidas' },
+                    { text: 'K-Swiss', value: 'k-swiss' },
+                    { text: 'Nike', value: 'nike' },
+                    { text: 'Puma', value: 'puma' }
+                ]}
             />
             <FilterGroup
                 title="Estado"
                 inputType="radio"
-                options={opcoesEstado}
                 selectedValues={estadoSelecionado}
                 onChange={(val) => setEstadoSelecionado(val)}
+                options={[
+                    { text: 'Novo', value: 'novo' },
+                    { text: 'Usado', value: 'usado' }
+                ]}
             />
         </>
     );
 
     return (
         <Layout>
+            {/* Topo da Listagem: Resultados + Ordenar por */}
             <div
                 style={{
                     display: 'flex',
@@ -90,83 +90,86 @@ export default function ProductListingPage() {
                     alignItems: 'center',
                     flexWrap: 'wrap',
                     gap: '16px',
-                    marginBottom: '32px'
+                    marginBottom: '28px'
                 }}
             >
-                <span style={{ fontSize: '16px', color: 'var(--dark-gray-2)' }}>
-                    <strong>Resultados para “Tênis”</strong> - {produtosExibidos.length} produtos
-                </span>
+                <div style={{ fontSize: '16px', color: 'var(--dark-gray-2)' }}>
+                    <strong>Resultados para "{termoFiltroUrl || 'Tênis'}"</strong> - {produtosExibidos.length} produtos
+                </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <div
                         style={{
                             display: 'flex',
                             alignItems: 'center',
+                            gap: '8px',
                             border: '1px solid var(--dark-gray-2)',
                             borderRadius: '4px',
-                            padding: '10px 16px',
+                            padding: '0 16px',
+                            height: '60px',
                             backgroundColor: 'var(--white)'
                         }}
                     >
-                        <span style={{ fontSize: '14px', color: 'var(--dark-gray-2)', fontWeight: '700', marginRight: '6px' }}>
-                            Ordernar por:
-                        </span>
+                        <label htmlFor="ordenar-select" style={{ fontSize: '16px', fontWeight: '700', color: 'var(--dark-gray-2)' }}>
+                            Ordenar por:
+                        </label>
                         <select
+                            id="ordenar-select"
                             value={sortOrder}
                             onChange={(e) => setSortOrder(e.target.value)}
                             style={{
                                 border: 'none',
-                                outline: 'none',
-                                fontSize: '14px',
+                                background: 'transparent',
+                                fontSize: '16px',
                                 color: 'var(--dark-gray-2)',
-                                backgroundColor: 'transparent',
+                                outline: 'none',
                                 cursor: 'pointer'
                             }}
                         >
-                            <option value="mais-relevantes">mais relevantes</option>
-                            <option value="menor-preco">menor preço</option>
-                            <option value="maior-preco">maior preço</option>
+                            <option value="menor-preco">Menor preço</option>
+                            <option value="maior-preco">Maior preço</option>
                         </select>
                     </div>
 
+                    {/* Botão Filtro Mobile */}
                     <button
                         type="button"
                         className="mobile-only"
-                        onClick={() => setFiltrosAbertos(true)}
+                        onClick={() => setFiltroMobileAberto(true)}
                         style={{
+                            width: '60px',
+                            height: '60px',
                             backgroundColor: 'var(--primary)',
                             color: 'var(--white)',
                             border: 'none',
                             borderRadius: '4px',
-                            width: '44px',
-                            height: '44px',
-                            cursor: 'pointer',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '20px'
+                            fontSize: '22px',
+                            cursor: 'pointer'
                         }}
-                        title="Abrir filtros"
+                        aria-label="Abrir filtros"
                     >
-                        ⚡
+                        ⏳
                     </button>
                 </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '30px', alignItems: 'flex-start' }}>
+            {/* Área Principal: Coluna Lateral de Filtros + Grid de Produtos */}
+            <div style={{ display: 'flex', gap: '28px', alignItems: 'flex-start' }}>
                 <aside
                     className="desktop-only"
                     style={{
                         width: '308px',
                         flexShrink: 0,
                         backgroundColor: 'var(--white)',
+                        padding: '30px',
                         borderRadius: '4px',
-                        padding: '24px',
-                        flexDirection: 'column',
-                        boxSizing: 'border-box'
+                        flexDirection: 'column'
                     }}
                 >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                        <h3 style={{ fontSize: '16px', color: 'var(--dark-gray-2)', fontWeight: '700', margin: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h3 style={{ fontSize: '16px', fontWeight: '700', color: 'var(--dark-gray-2)', margin: 0 }}>
                             Filtrar por
                         </h3>
                         {(marcasSelecionadas.length > 0 || estadoSelecionado) && (
@@ -189,58 +192,54 @@ export default function ProductListingPage() {
                             </button>
                         )}
                     </div>
-                    <hr style={{ borderColor: 'var(--light-gray-3)', borderWidth: '0.5px', marginBottom: '20px' }} />
-                    <BlocoFiltros />
+                    <hr style={{ border: 'none', borderTop: '1px solid var(--light-gray-2)', margin: '16px 0' }} />
+                    {conteudoFiltros}
                 </aside>
 
-                <main style={{ flex: 1 }}>
-                    <ProductListing products={produtosExibidos} />
-                </main>
+                <div style={{ flex: 1, width: '100%' }}>
+                    <Section title={`${produtosExibidos.length} produtos encontrados`} titleAlign="left">
+                        <ProductListing products={produtosExibidos} />
+                    </Section>
+                </div>
             </div>
 
-            {filtrosAbertos && (
+            {/* Gaveta de Filtros Mobile */}
+            {filtroMobileAberto && (
                 <div
                     style={{
                         position: 'fixed',
                         inset: 0,
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
                         zIndex: 999,
                         display: 'flex'
                     }}
-                    onClick={() => setFiltrosAbertos(false)}
+                    onClick={() => setFiltroMobileAberto(false)}
                 >
                     <div
                         style={{
-                            width: '320px',
+                            width: '300px',
                             maxWidth: '85%',
                             height: '100%',
                             backgroundColor: 'var(--white)',
                             padding: '24px',
-                            overflowY: 'auto',
-                            boxSizing: 'border-box'
+                            overflowY: 'auto'
                         }}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                            <h3 style={{ fontSize: '16px', color: 'var(--dark-gray-2)', fontWeight: '700', margin: 0 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <h3 style={{ fontSize: '16px', fontWeight: '700', color: 'var(--dark-gray-2)', margin: 0 }}>
                                 Filtrar por
                             </h3>
                             <button
                                 type="button"
-                                onClick={() => setFiltrosAbertos(false)}
-                                style={{
-                                    background: 'none',
-                                    border: 'none',
-                                    fontSize: '20px',
-                                    cursor: 'pointer',
-                                    color: 'var(--dark-gray-2)'
-                                }}
+                                onClick={() => setFiltroMobileAberto(false)}
+                                style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer' }}
                             >
                                 ✕
                             </button>
                         </div>
-                        <hr style={{ borderColor: 'var(--light-gray-3)', borderWidth: '0.5px', marginBottom: '20px' }} />
-                        <BlocoFiltros />
+                        <hr style={{ border: 'none', borderTop: '1px solid var(--light-gray-2)', margin: '16px 0' }} />
+                        {conteudoFiltros}
                     </div>
                 </div>
             )}

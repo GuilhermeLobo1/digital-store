@@ -4,17 +4,41 @@ import Layout from '../Layout';
 import Section from '../../components/Section';
 import ProductListing from '../../components/ProductListing';
 import Gallery from '../../components/Gallery';
+import heroImg from '../../assets/hero.png';
 
 export default function HomePage() {
     const [categoriaAtiva, setCategoriaAtiva] = useState(0);
 
     const slidesHome = [
-        { src: '/home-slide-1.jpeg' },
-        { src: '/home-slide-2.jpeg' },
-        { src: '/home-slide-3.jpeg' },
-        { src: '/home-slide-4.jpeg' }
+        {
+            src: heroImg,
+            subtitle: 'Melhores ofertas personalizadas',
+            title: 'Queima de estoque Nike 🔥',
+            description: 'Consequat culpa exercitation mollit nisi excepteur do do tempor laboris eiusmod irure consectetur.',
+            filter: 'none'
+        },
+        {
+            src: heroImg,
+            subtitle: 'Novidades da estação',
+            title: 'Coleção Air Force Blue ⚡',
+            description: 'Modelos exclusivos com amortecimento Air e acabamento premium para o seu dia a dia.',
+            filter: 'hue-rotate(210deg)'
+        },
+        {
+            src: heroImg,
+            subtitle: 'Edição limitada',
+            title: 'Estilo Urbano Street 🔥',
+            description: 'Descontos especiais em toda a linha casual e desportiva por tempo limitado.',
+            filter: 'hue-rotate(110deg)'
+        },
+        {
+            src: heroImg,
+            subtitle: 'Oferta da semana',
+            title: 'Clássicos em Promoção 👟',
+            description: 'Aproveite até 30% de desconto nos modelos mais procurados da Digital Store.',
+            filter: 'hue-rotate(290deg)'
+        }
     ];
-
     const colecoesDestaque = [
         { title: 'Novo drop\nSupreme', image: '/collection-1.png' },
         { title: 'Coleção\nAdidas', image: '/collection-2.png' },
@@ -70,14 +94,14 @@ export default function HomePage() {
     ];
 
     const produtosEmAlta = [
-        { name: 'K-Swiss V8 - Masculino', image: '/product-thumb-1.jpeg', price: 200, priceDiscount: 100 },
-        { name: 'K-Swiss V8 - Feminino', image: '/product-thumb-2.jpeg', price: 200, priceDiscount: 100 },
-        { name: 'K-Swiss Casual', image: '/product-thumb-3.jpeg', price: 200, priceDiscount: null },
-        { name: 'K-Swiss Running Pro', image: '/product-thumb-4.jpeg', price: 200, priceDiscount: 100 },
-        { name: 'K-Swiss Urban Street', image: '/product-thumb-5.jpeg', price: 200, priceDiscount: 100 },
-        { name: 'K-Swiss V8 Preto', image: '/product-thumb-1.jpeg', price: 200, priceDiscount: null },
-        { name: 'K-Swiss Sport Edition', image: '/product-thumb-2.jpeg', price: 200, priceDiscount: 100 },
-        { name: 'K-Swiss Classic 90s', image: '/product-thumb-3.jpeg', price: 200, priceDiscount: 100 }
+        { id: 1, name: 'K-Swiss V8 - Masculino', image: '/product-thumb-1.jpeg', price: 200, priceDiscount: 100 },
+        { id: 2, name: 'Nike Air Max - Feminino', image: '/product-thumb-2.jpeg', price: 250, priceDiscount: 180 },
+        { id: 3, name: 'Adidas Classic Casual', image: '/product-thumb-3.jpeg', price: 150, priceDiscount: null },
+        { id: 4, name: 'Puma Running Pro', image: '/product-thumb-4.jpeg', price: 320, priceDiscount: 249.9 },
+        { id: 5, name: 'Nike Revolution 6', image: '/product-thumb-5.jpeg', price: 299.9, priceDiscount: 219.9 },
+        { id: 6, name: 'Adidas Street Wear', image: '/product-thumb-1.jpeg', price: 220, priceDiscount: null },
+        { id: 7, name: 'K-Swiss Sport Edition', image: '/product-thumb-2.jpeg', price: 199, priceDiscount: 159.9 },
+        { id: 8, name: 'Puma Urban 90s', image: '/product-thumb-3.jpeg', price: 280, priceDiscount: 219.9 }
     ];
 
     return (
@@ -85,12 +109,12 @@ export default function HomePage() {
             {/* 5.1 - Slide de Imagens */}
             <Gallery images={slidesHome} width={1440} height={681} radius="4px" />
 
-            {/* 5.2 - Coleções em Destaque (Cards Retangulares) */}
+            {/* 5.2 - Coleções em Destaque */}
             <Section title="Coleções em destaque" titleAlign="left">
                 <div
                     style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
                         gap: '16px'
                     }}
                 >
@@ -102,15 +126,14 @@ export default function HomePage() {
                                 borderRadius: '8px',
                                 overflow: 'hidden',
                                 backgroundColor: '#D8E3F2',
-                                height: '251px',
-                                padding: '24px 30px',
+                                aspectRatio: '405 / 251',
+                                padding: '14px 30px 24px',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'space-between',
                                 boxSizing: 'border-box'
                             }}
                         >
-                            {/* Imagem de fundo (já contém o título desenhado) */}
                             <img
                                 src={col.image}
                                 alt={col.title}
@@ -119,12 +142,13 @@ export default function HomePage() {
                                     inset: 0,
                                     height: '100%',
                                     width: '100%',
-                                    objectFit: 'cover',
+                                    objectFit: 'contain',
+                                    objectPosition: 'right center',
                                     zIndex: 1
                                 }}
                             />
 
-                            {/* Tag 30% OFF no topo esquerdo */}
+                            {/* Tag 30% OFF posicionada acima do título */}
                             <div style={{ position: 'relative', zIndex: 2 }}>
                                 <span
                                     style={{
@@ -132,7 +156,7 @@ export default function HomePage() {
                                         color: 'var(--dark-gray-2)',
                                         fontSize: '12px',
                                         fontWeight: '700',
-                                        padding: '6px 14px',
+                                        padding: '4px 12px',
                                         borderRadius: '20px',
                                         display: 'inline-block'
                                     }}
@@ -141,7 +165,7 @@ export default function HomePage() {
                                 </span>
                             </div>
 
-                            {/* Botão Comprar na base esquerda */}
+                            {/* Botão Comprar posicionado abaixo do título */}
                             <div style={{ position: 'relative', zIndex: 2 }}>
                                 <Link
                                     to="/produtos"
@@ -150,7 +174,7 @@ export default function HomePage() {
                                         color: 'var(--primary)',
                                         fontWeight: '700',
                                         fontSize: '14px',
-                                        padding: '12px 36px',
+                                        padding: '10px 32px',
                                         borderRadius: '8px',
                                         textDecoration: 'none',
                                         display: 'inline-block'
@@ -161,61 +185,6 @@ export default function HomePage() {
                             </div>
                         </div>
                     ))}
-                </div>
-            </Section>
-
-            {/* 5.2.2 - Coleções em Destaque (Ícones Circulares) */}
-            <Section title="Coleções em destaque" titleAlign="center">
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '36px',
-                        flexWrap: 'wrap',
-                        marginTop: '12px'
-                    }}
-                >
-                    {categoriasIcones.map((cat, idx) => {
-                        const isAtiva = categoriaAtiva === idx;
-                        return (
-                            <div
-                                key={idx}
-                                onClick={() => setCategoriaAtiva(idx)}
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    gap: '12px',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        width: '104px',
-                                        height: '104px',
-                                        borderRadius: '50%',
-                                        backgroundColor: 'var(--white)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
-                                        transition: 'transform 0.2s ease'
-                                    }}
-                                >
-                                    {cat.svg(isAtiva ? '#C92071' : '#8F8F8F')}
-                                </div>
-                                <span
-                                    style={{
-                                        fontSize: '14px',
-                                        fontWeight: '700',
-                                        color: isAtiva ? 'var(--dark-gray)' : 'var(--dark-gray-2)'
-                                    }}
-                                >
-                                    {cat.name}
-                                </span>
-                            </div>
-                        );
-                    })}
                 </div>
             </Section>
 
@@ -235,7 +204,7 @@ export default function HomePage() {
                     borderRadius: '8px',
                     padding: '60px 40px',
                     marginTop: '60px',
-                    marginBottom: '40px',
+                    marginBottom: '20px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -243,13 +212,13 @@ export default function HomePage() {
                     flexWrap: 'wrap'
                 }}
             >
-                {/* Círculo Lilás + Imagem do Tênis */}
+                {/* Círculo Lilás + Imagem do Ténis */}
                 <div
                     style={{
                         position: 'relative',
-                        width: '400px',
+                        width: '466px',
                         maxWidth: '100%',
-                        height: '360px',
+                        height: '400px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
@@ -258,10 +227,10 @@ export default function HomePage() {
                     <div
                         style={{
                             position: 'absolute',
-                            width: '330px',
-                            height: '330px',
+                            width: '380px',
+                            height: '380px',
                             borderRadius: '50%',
-                            background: 'linear-gradient(180deg, rgba(66, 0, 255, 0.18) 0%, rgba(255, 255, 255, 0) 100%)',
+                            background: 'linear-gradient(180deg, rgba(66, 0, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%)',
                             zIndex: 1
                         }}
                     />
@@ -271,9 +240,11 @@ export default function HomePage() {
                         style={{
                             position: 'relative',
                             zIndex: 2,
-                            width: '100%',
-                            maxHeight: '300px',
-                            objectFit: 'contain'
+                            width: '320px',
+                            height: '320px',
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+                            boxShadow: '0 8px 24px rgba(0,0,0,0.06)'
                         }}
                     />
                 </div>

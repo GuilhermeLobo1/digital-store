@@ -94,7 +94,7 @@ export default function ProductCard({ id = 1, image, name, price, priceDiscount,
                                     textDecoration: 'line-through'
                                 }}
                             >
-                                \${price}
+                                R$ {price}
                             </span>
                             <span
                                 style={{
@@ -103,7 +103,7 @@ export default function ProductCard({ id = 1, image, name, price, priceDiscount,
                                     fontWeight: '700'
                                 }}
                             >
-                                \${priceDiscount}
+                                R$ {priceDiscount}
                             </span>
                         </>
                     ) : (
@@ -114,7 +114,7 @@ export default function ProductCard({ id = 1, image, name, price, priceDiscount,
                                 fontWeight: '700'
                             }}
                         >
-                            \${price}
+                            R$ {price}
                         </span>
                     )}
                 </div>
