@@ -28,7 +28,7 @@ Projeto de e-commerce desenvolvido como entrega do programa **Geração Tech**, 
 
 1. Clone este repositório:
    ```bash
-   git clone [https://github.com/GuilhermeLobo1/digital-store.git](https://github.com/GuilhermeLobo1/digital-store.git)
+   git clone https://github.com/GuilhermeLobo1/digital-store.git
 2. Acesse a pasta do projeto:
     ```bash
    cd digital-store
