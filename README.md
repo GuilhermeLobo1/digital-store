@@ -1,16 +1,42 @@
-# React + Vite
+# 🛍️ Digital Store - Drip Store (Front-End)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto de e-commerce desenvolvido como entrega do programa **Geração Tech**, seguindo fielmente o protótipo oficial no Figma.
 
-Currently, two official plugins are available:
+## Tecnologias Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React.js** (com Vite)
+- **React Router DOM** (Roteamento SPA entre páginas)
+- **CSS3** (Variáveis globais, Flexbox, CSS Grid e Media Queries para responsividade Mobile/Desktop)
 
-## React Compiler
+## 📄 Páginas e Funcionalidades Implementadas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Home (`/`)**:
+   - Carrossel de banners principais (`<Gallery />`).
+   - Seção de coleções em destaque (cards promocionais e navegação por ícones de categorias).
+   - Vitrine de produtos em alta (`<ProductListing />` e `<ProductCard />`).
+   - Banner de Oferta Especial (*Air Jordan edição de colecionador*).
+2. **Listagem de Produtos (`/produtos`)**:
+   - Filtro lateral dinâmico por Marca e Estado (`<FilterGroup />`).
+   - Ordenação funcional por menor e maior preço.
+   - Gaveta lateral (*Drawer*) de filtros exclusiva para dispositivos móveis.
+3. **Detalhes do Produto (`/product/:id`)**:
+   - Galeria interativa com miniaturas (`<Gallery showThumbs />`).
+   - Bloco de compra (`<BuyBox />`) com seleção de tamanho e cor (`<ProductOptions />`).
+   - Seção de produtos relacionados.
 
-## Expanding the ESLint configuration
+## 🔧 Como executar o projeto localmente
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone este repositório:
+   ```bash
+   git clone [https://github.com/GuilhermeLobo1/digital-store.git](https://github.com/GuilhermeLobo1/digital-store.git)
+2. Acesse a pasta do projeto:
+    ```bash
+   cd digital-store
+3. Instale as dependências:
+    ```bash
+    npm install
+4. Inicie o servidor de desenvolvimento:
+    ```bash
+    npm run dev
+5. Acesse o servidor local no navegador:
+    http://localhost:5173/

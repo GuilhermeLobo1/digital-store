@@ -1,27 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-export default function ProductCard({ image, name, price, priceDiscount, discountTag = '30% OFF' }) {
+export default function ProductCard({ id = 1, image, name, price, priceDiscount, discountTag = '30% OFF' }) {
     return (
-        <div
+        <Link
+            to={`/product/${id}`}
             style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: '292px',
+                width: '100%',
+                textDecoration: 'none',
                 cursor: 'pointer',
-                backgroundColor: 'var(--white)',
-                borderRadius: '8px',
-                overflow: 'hidden',
+                backgroundColor: 'transparent',
                 position: 'relative',
                 transition: 'transform 0.2s ease'
             }}
         >
-            {/* Tag de Desconto (quando houver priceDiscount) */}
+            {/* Tag de Desconto */}
             {priceDiscount && (
                 <span
                     style={{
                         position: 'absolute',
-                        top: '16px',
-                        left: '16px',
+                        top: '12px',
+                        left: '12px',
                         backgroundColor: '#E7FF86',
                         color: 'var(--dark-gray-2)',
                         fontSize: '12px',
@@ -35,12 +36,13 @@ export default function ProductCard({ image, name, price, priceDiscount, discoun
                 </span>
             )}
 
-            {/* Imagem do Produto */}
+            {/* Caixa Branca da Imagem */}
             <div
                 style={{
-                    width: '292px',
-                    height: '321px',
+                    width: '100%',
+                    aspectRatio: '292 / 321',
                     backgroundColor: '#FFFFFF',
+                    borderRadius: '4px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -62,61 +64,61 @@ export default function ProductCard({ image, name, price, priceDiscount, discoun
                 />
             </div>
 
-            {/* Informações */}
-            <div style={{ padding: '16px 8px 12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <span style={{ fontSize: '12px', color: 'var(--light-gray)', fontWeight: 'bold' }}>
+            {/* Textos e Preços */}
+            <div style={{ padding: '12px 4px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <span style={{ fontSize: '12px', color: 'var(--light-gray)', fontWeight: '700' }}>
                     Tênis
                 </span>
                 <h4
                     style={{
-                        fontSize: '18px',
+                        fontSize: '16px',
                         color: 'var(--dark-gray-2)',
                         fontWeight: '400',
-                        lineHeight: '24px',
+                        lineHeight: '22px',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
-                        textOverflow: 'ellipsis'
+                        textOverflow: 'ellipsis',
+                        margin: 0
                     }}
                 >
                     {name}
                 </h4>
 
-                {/* Preços */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
                     {priceDiscount ? (
                         <>
                             <span
                                 style={{
-                                    fontSize: '18px',
+                                    fontSize: '16px',
                                     color: 'var(--light-gray)',
                                     textDecoration: 'line-through'
                                 }}
                             >
-                                ${price}
+                                \${price}
                             </span>
                             <span
                                 style={{
-                                    fontSize: '22px',
+                                    fontSize: '18px',
                                     color: 'var(--dark-gray)',
                                     fontWeight: '700'
                                 }}
                             >
-                                ${priceDiscount}
+                                \${priceDiscount}
                             </span>
                         </>
                     ) : (
                         <span
                             style={{
-                                fontSize: '22px',
+                                fontSize: '18px',
                                 color: 'var(--dark-gray)',
                                 fontWeight: '700'
                             }}
                         >
-                            ${price}
+                            \${price}
                         </span>
                     )}
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }

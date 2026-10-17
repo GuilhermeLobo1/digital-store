@@ -3,22 +3,15 @@ import ProductCard from '../ProductCard';
 
 export default function ProductListing({ products = [] }) {
     return (
-        <div
-            style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(292px, 1fr))',
-                gap: '24px',
-                justifyItems: 'center',
-                width: '100%'
-            }}
-        >
-            {products.map((item, index) => (
+        <div className="product-grid">
+            {products.map((product, index) => (
                 <ProductCard
-                    key={index}
-                    image={item.image}
-                    name={item.name}
-                    price={item.price}
-                    priceDiscount={item.priceDiscount}
+                    key={product.id || index}
+                    id={product.id || 1}
+                    name={product.name}
+                    image={product.image}
+                    price={product.price}
+                    priceDiscount={product.priceDiscount}
                 />
             ))}
         </div>
